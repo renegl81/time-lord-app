@@ -23,4 +23,5 @@ export interface Project {
     tasks: Task[];
     time_entries: TimeEntry[];
     workspace: Workspace;
+    workspace_id: number;
 }

@@ -47,10 +47,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/projects/{project}/users', [ProjectController::class, 'assignUsers'])
                 ->name('projects.users.assign');
 
-            // Tareas
-            Route::resource('projects.tasks', TaskController::class)->shallow();
+
 
             Route::prefix('projects/{project}/tasks')->name('projects.tasks.')->group(function () {
+                // Tareas
+                Route::resource('', TaskController::class);
                 // Cambiar estado de tarea
                 Route::patch('/{task}/status', [TaskController::class, 'updateStatus'])
                     ->name('update-status');

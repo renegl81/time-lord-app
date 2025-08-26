@@ -68,18 +68,18 @@
         </div>
 
         <div class="mb-4">
-            <label for="estimate_hours" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label for="estimate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
                 Horas estimadas
             </label>
             <input
                 type="number"
                 step="0.5"
                 min="0"
-                id="estimate_hours"
-                v-model="form.estimate_hours"
+                id="estimate"
+                v-model="form.estimate"
                 class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
             />
-            <div v-if="form.errors.estimate_hours" class="mt-1 text-sm text-red-500">{{ form.errors.estimate_hours }}</div>
+            <div v-if="form.errors.estimate" class="mt-1 text-sm text-red-500">{{ form.errors.estimate }}</div>
         </div>
 
         <div class="mb-4">
@@ -169,7 +169,7 @@
         description: '',
         status: 'pending',
         due_date: '',
-        estimate_hours: '',
+        estimate: '',
         is_billable: props.project.is_billable,
         hourly_rate: props.project.hourly_rate || '',
         user_id: '',

@@ -1,4 +1,5 @@
 import { User } from './user';
+import { Project } from '@/types/project';
 
 export interface Task {
     id: number;
@@ -12,4 +13,6 @@ export interface Task {
     estimate_hours?: number;
     actual_hours?: number;
     priority?: number;
+    project_id?: number;
+    project: Project
 }

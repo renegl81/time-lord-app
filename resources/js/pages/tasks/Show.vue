@@ -82,7 +82,7 @@
                         <div>
                             <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Tiempo estimado:</h3>
                             <p class="mt-1 text-gray-900 dark:text-white">
-                                {{ task.estimate_hours ? `${task.estimate_hours} horas` : 'No estimado' }}
+                                {{ task.estimate ? `${task.estimate} horas` : 'No estimado' }}
                             </p>
                         </div>
                     </div>
@@ -248,8 +248,8 @@ const isDeleteModalOpen = ref(false);
 const taskStatus = ref(props.task.status);
 
 const breadcrumbs = [
-    { title: 'Tareas', href: route('tasks.index') },
-    { title: props.task.name, href: route('tasks.show', props.task.id) },
+    { title: 'Tareas', href: route('projects.tasks.index',{project: props.task.project_id, workspace: props.task.project.workspace_id}) },
+    { title: props.task.name, href: route('projects.tasks.show', {task: props.task.id, project: props.task.project_id, workspace: props.task.project.workspace_id}) },
 ];
 
 const totalTime = computed(() => {

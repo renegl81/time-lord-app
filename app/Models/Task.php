@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Task extends Model
 {
@@ -11,18 +12,23 @@ class Task extends Model
 
     protected $fillable = [
         'name',
-        'address',
-        'contact_info',
-        'workspace_id',
+        'description',
+        'estimate',
+        'hourly_rate',
+        'is_billable',
+        'status',
+        'user_id',
+        'project_id',
     ];
 
-    public function workspace()
+
+    public function project(): BelongsTo
     {
-        return $this->belongsTo(Workspace::class);
+        return $this->belongsTo(Project::class);
     }
 
-    public function projects()
+    public function user(): BelongsTo
     {
-        return $this->hasMany(Project::class);
+        return $this->belongsTo(User::class);
     }
 }

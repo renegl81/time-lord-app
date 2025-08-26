@@ -11,12 +11,12 @@
                     </p>
                 </div>
                 <div class="flex gap-2">
-                    <Link
-                        :href="route('tasks.create')"
+                 <!--   <Link
+                        :href="route('projects.tasks.create')"
                         class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
                     >
                         Nueva Tarea
-                    </Link>
+                    </Link> -->
                 </div>
             </div>
 
@@ -68,12 +68,12 @@
             <!-- Lista de tareas -->
             <div v-if="tasks.length === 0" class="rounded-lg border border-dashed border-gray-300 bg-gray-50 p-6 text-center dark:border-gray-700 dark:bg-gray-800">
                 <p class="text-gray-500 dark:text-gray-400">No hay tareas disponibles.</p>
-                <Link
-                    :href="route('tasks.create')"
+              <!--  <Link
+                    :href="route('projects.tasks.create')"
                     class="mt-2 inline-block rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700"
                 >
                     Crear Primera Tarea
-                </Link>
+                </Link> -->
             </div>
             <div v-else class="overflow-hidden rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
                 <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -101,8 +101,8 @@
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white dark:divide-gray-700 dark:bg-gray-800">
                     <tr v-for="task in tasks" :key="task.id">
-                        <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
-                            <Link :href="route('tasks.show', task.id)" class="hover:underline">
+                      <!--  <td class="whitespace-nowrap px-6 py-4 text-sm font-medium text-gray-900 dark:text-white">
+                            <Link :href="route('projects.tasks.show', {task: task.id, project: task.project_id, workspace: task.project.workspace_id})" class="hover:underline">
                                 {{ task.name }}
                             </Link>
                         </td>
@@ -110,7 +110,7 @@
                             <Link :href="route('projects.show', task.project_id)" class="hover:underline">
                                 {{ task.project ? task.project.name : '—' }}
                             </Link>
-                        </td>
+                        </td>-->
                         <td class="whitespace-nowrap px-6 py-4 text-sm">
                 <span
                     :class="`inline-block rounded px-2 py-1 text-xs font-semibold ${
@@ -133,8 +133,8 @@
                         </td>
                         <td class="whitespace-nowrap px-6 py-4 text-right text-sm">
                             <div class="flex justify-end space-x-2">
-                                <Link
-                                    :href="route('tasks.show', task.id)"
+                              <!--  <Link
+                                    :href="route('projects.tasks.show', {task: task.id, project: task.project_id, workspace: task.project.workspace_id})"
                                     class="rounded bg-blue-600 px-3 py-1 text-white hover:bg-blue-700"
                                 >
                                     Ver
@@ -144,7 +144,7 @@
                                     class="rounded bg-gray-600 px-3 py-1 text-white hover:bg-gray-700"
                                 >
                                     Editar
-                                </Link>
+                                </Link> -->
                             </div>
                         </td>
                     </tr>
@@ -152,7 +152,7 @@
                 </table>
 
                 <!-- Paginación -->
-                <div v-if="pagination.links && pagination.links.length > 3" class="border-t border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-gray-800 sm:px-6">
+                <div v-if="pagination?.links && pagination?.links?.length > 3" class="border-t border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-gray-800 sm:px-6">
                     <div class="flex flex-1 items-center justify-between">
                         <div>
                             <p class="text-sm text-gray-700 dark:text-gray-300">
@@ -227,7 +227,7 @@ const filters = reactive({
 });
 
 const breadcrumbs = [
-    { title: 'Tareas', href: route('tasks.index') },
+    { title: 'Tareas' },
 ];
 
 let searchTimeout: number | null = null;
@@ -243,11 +243,12 @@ const debounceSearch = () => {
 
 const filterTasks = () => {
     router.get(
-        route('tasks.index'),
+        route('projects.tasks.index'),
         {
             status: filters.status,
             project_id: filters.projectId,
-            search: filters.search
+            search: filters.search,
+            workspace: 1
         },
         {
             preserveState: true,

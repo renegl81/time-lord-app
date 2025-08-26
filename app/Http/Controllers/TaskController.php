@@ -6,70 +6,79 @@ use App\Actions\Tasks\CreateTask;
 use App\Models\Project;
 use App\Models\Task;
 use App\Models\Workspace;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class TaskController extends Controller
 {
-    public function index(Workspace $workspace, Project $project)
+    public function index(Workspace $workspace, Project $project): Response
     {
-        $tasks = $project->tasks;
+      $tasks = Task::whereHas('project', function ($query) use ($project) {
+          return $query->where('id', $project->id);
+      })->paginate();
 
-        return Inertia::render('tasks/index', [
+
+        return Inertia::render('tasks/Index', [
             'workspace' => $workspace,
             'project' => $project,
             'tasks' => $tasks,
         ]);
     }
 
-    public function create(Workspace $workspace, Project $project)
+    public function create(Workspace $workspace, Project $project): Response
     {
-        return Inertia::render('tasks/create', [
+        return Inertia::render('tasks/Create', [
             'workspace' => $workspace,
             'project' => $project,
         ]);
     }
 
-    public function store(Request $request, Workspace $workspace, Project $project, CreateTask $createTask)
+    public function store(Request $request, Workspace $workspace, Project $project, CreateTask $createTask): RedirectResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'required|string',
             'estimate' => 'nullable|numeric|min:0',
             'hourly_rate' => 'nullable|numeric|min:0',
             'is_billable' => 'boolean',
+            'status' => 'required|string',
+            'user_id' => 'nullable|integer',
         ]);
 
-        $task = $createTask->execute($validated, $project);
+
+        $createTask->execute($validated, $project);
 
         return redirect()->route('projects.tasks.index', [$workspace, $project])
             ->with('success', 'Tarea creada con éxito.');
     }
 
-    public function show(Task $task)
+    public function show(Task $task): Response
     {
         $project = $task->project;
         $workspace = $project->workspace;
 
-        return Inertia::render('tasks/show', [
+        return Inertia::render('tasks/Show', [
             'workspace' => $workspace,
             'project' => $project,
             'task' => $task,
         ]);
     }
 
-    public function edit(Task $task)
+    public function edit(Task $task): Response
     {
         $project = $task->project;
         $workspace = $project->workspace;
 
-        return Inertia::render('tasks/edit', [
+        return Inertia::render('tasks/Edit', [
             'workspace' => $workspace,
             'project' => $project,
             'task' => $task,
         ]);
     }
 
-    public function update(Request $request, Task $task)
+    public function update(Request $request, Task $task): RedirectResponse
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
@@ -83,11 +92,15 @@ class TaskController extends Controller
         $project = $task->project;
         $workspace = $project->workspace;
 
-        return redirect()->route('tasks.show', $task)
+        return redirect()->route('projects.tasks.show', [
+            'task' =>$task,
+            'project' => $task->project_id,
+            'workspace' => $task->project->workspace->id
+            ])
             ->with('success', 'Tarea actualizada con éxito.');
     }
 
-    public function destroy(Task $task)
+    public function destroy(Task $task): RedirectResponse
     {
         $project = $task->project;
         $workspace = $project->workspace;

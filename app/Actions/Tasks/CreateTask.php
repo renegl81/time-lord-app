@@ -11,6 +11,9 @@ class CreateTask
             'estimate' => $data['estimate'] ?? null,
             'hourly_rate' => $data['hourly_rate'] ?? null,
             'is_billable' => $data['is_billable'] ?? true,
+            'user_id' => auth()->id(),
+            'status' => $data['status'] ?? null,
+            'description' => $data['description'] ?? null,
         ]);
     }
 }
